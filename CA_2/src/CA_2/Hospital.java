@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package CA_2;
+import java.util.*;
 
 /**
  *
@@ -14,7 +15,11 @@ public class Hospital {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("test");
+        List<String> names = FileHandler.readNamesFromFile("src/CA_2/Applicants_Form.txt");
+        System.out.println("Нийт нэрсийн тоо:" + names.size());
+        for (String name : names){
+            System.out.println(name);
+        }
     }
     
 }
