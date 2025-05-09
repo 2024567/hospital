@@ -30,80 +30,99 @@ public class Hospital {
         List<Employee> employees = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
         
-        
-        System.out.println("Нийт нэрсийн тоо:" + names.size());
-        for (String name : names){
-            System.out.println(name);
-        }
-        System.out.println("*******************************************************");
-        
-        System.out.println("sorted нэрс:");
-        for(int i = 0; i < sortedNames.size();i++){
-            System.out.println(sortedNames.get(i));
-        }
-        System.out.println("*******************************************************");
-        
-        System.out.println("Хайх нэрийг оруулна уу: ");
-        String targetName = scanner.nextLine();
-        
-        int index = Searcher.binarySearch(sortedNames, targetName);
-        if(index >= 0){
-            System.out.println("Нэр олдлоо:" + sortedNames.get(index));
-            // Жишээ болгон рандом Manager/Department оноож харуулна
-            ManagerType manager = ManagerType.values()[(int)(Math.random() * ManagerType.values().length)];
-             DepartmentName department = DepartmentName.values()[(int)(Math.random() * DepartmentName.values().length)];
+        while(true){
+            System.out.println("\n📋 Меню сонгоно уу:");
+            for (int i = 0; i < MenuOption.values().length; i++) {
+                System.out.println((i + 1) + ". " + MenuOption.values()[i]);
+            } 
+            
+            int choice = getValidChoice(scanner, MenuOption.values().length);
+            MenuOption selected = MenuOption.values()[choice - 1];
+            
+            switch (selected) {
+                case SORT:
+                    //List<String> names = employees.stream().map(Employee::getName).toList();
+                    //List<String> sorted = sorter.mergeSort(names);
+                    System.out.println("sorted нэрс:");
+                    for(int i = 0; i < Math.min(20,sortedNames.size());i++){
+                    System.out.println(sortedNames.get(i));
+                     }
+                    
+                    break;
 
-            System.out.println("Manager: " + manager);
-            System.out.println("Department: " + department);
-        } else {
-            System.out.println("Хайсан нэр олдсонгүй.");
+                case SEARCH:
+                    System.out.print("Хайх нэр: ");
+                    String target = scanner.nextLine();
+//                    List<String> nameList = employees.stream().map(Employee::getName).toList();
+//                    List<String> sortedList = sorter.mergeSort(nameList);
+                    int index = Searcher.binarySearch(sortedNames, target);
+                    if (index >= 0) {
+                        System.out.println("Нэр олдлоо: " + sortedNames.get(index));
+                    } else {
+                        System.out.println("Хайсан нэр олдсонгүй.");
+                    }
+                    break;
+
+                case ADD_EMPLOYEE:
+                    //1. Нэр авах
+                    System.out.println("Ажилтны нэр: ");
+                    String name = scanner.nextLine();
+
+                    //2.Менежер төрөл сонгох
+                    System.out.println("Менежерийн төрлийг сонгоно уу:");
+                    ManagerType[] managerTypes = ManagerType.values();
+                    for(int i=0 ; i< managerTypes.length;i++){
+                        System.out.println((i+1) + ". " + managerTypes[i]);   
+                    }
+
+                    int managerChoice = getValidChoice(scanner, managerTypes.length);
+                    ManagerType managerType = managerTypes[managerChoice - 1];
+
+                    //3. Хэлтэс сонгох
+                    System.out.println("Хэлтсийг сонгоно уу:");
+                    DepartmentName[] departments= DepartmentName.values();
+                    for(int i=0; i < departments.length;i++){
+                        System.out.println((i + 1) + ". " + departments[i]);
+                    }
+
+                    int deptChoice = getValidChoice(scanner, departments.length);
+                    DepartmentName department = departments[deptChoice - 1];
+
+                    //4. employee үүсгээд жагсаалт руу нэмэх
+                    Employee newEmployee = new Employee(name, managerType, department);
+                    employees.add(newEmployee);
+
+
+                    System.out.println("Амжилттай нэмэгдлээ: " + newEmployee);
+                    break;
+
+                case GENERATE_RANDOM:
+                    System.out.print("Хэдэн ажилтан үүсгэх вэ? ");
+                    int count = scanner.nextInt();
+                    scanner.nextLine();
+                    for (int i = 0; i < count; i++) {
+                        Employee e = generateRandomEmployee();
+                        employees.add(e);
+                        System.out.println("➕ " + e);
+                    }
+                    break;
+                
+                case SHOW_EMPLOYEES:
+                    System.out.println("📋 Ажилтны нийт жагсаалт:");
+                    for (Employee e : employees) {
+                        System.out.println(e);
+                    }
+                    break;
+
+                case EXIT:
+                    System.out.println("Программыг дуусгалаа.");
+                    return;
+            
         }
         
-        //1. Нэр авах
-        System.out.println("Ажилтны нэр: ");
-        String name = scanner.nextLine();
-        
-        //2.Менежер төрөл сонгох
-        System.out.println("Менежерийн төрлийг сонгоно уу:");
-        ManagerType[] managerTypes = ManagerType.values();
-        for(int i=0 ; i< managerTypes.length;i++){
-            System.out.println((i+1) + ". " + managerTypes[i]);   
-        }
-        
-        int managerChoice = getValidChoice(scanner, managerTypes.length);
-        ManagerType managerType = managerTypes[managerChoice - 1];
-        
-        //3. Хэлтэс сонгох
-        System.out.println("Хэлтсийг сонгоно уу:");
-        DepartmentName[] departments= DepartmentName.values();
-        for(int i=0; i < departments.length;i++){
-            System.out.println((i + 1) + ". " + departments[i]);
-        }
-        
-        int deptChoice = getValidChoice(scanner, departments.length);
-        DepartmentName department = departments[deptChoice - 1];
-        
-        //4. employee үүсгээд жагсаалт руу нэмэх
-        Employee newEmployee = new Employee(name, managerType, department);
-        employees.add(newEmployee);
         
         
-        System.out.println("Амжилттай нэмэгдлээ: " + newEmployee);
         
-        System.out.println("*******************************************************");
-        
-        System.out.print("Хэдэн санамсаргүй ажилтан үүсгэх вэ? ");
-        int count = scanner.nextInt();
-        scanner.nextLine();
-        
-        for(int i = 0 ; i < count ; i++){
-            Employee randomEmp = generateRandomEmployee();
-            employees.add(randomEmp);
-            System.out.println("+ " + randomEmp);
-        }
-        
-        for(Employee e: employees){
-            System.out.println(e);
         }
         
         
