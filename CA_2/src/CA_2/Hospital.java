@@ -4,6 +4,7 @@
  */
 package CA_2;
 import java.util.*;
+import java.io.*;
 
 /**
  *
@@ -13,147 +14,169 @@ public class Hospital {
 
     /**
      * @param args the command line arguments
-     */
-    
-    public static final String[] FIRST_NAMES = {
-        "Бат", "Сараа", "Оюунаа", "Тэмүүлэн", "Мөнх", "Энхжин", "Жавхлан", "Төгөлдөр", "Сувд", "Ганболд"
-    };
-    public static final String[] LAST_NAMES = {
-        "Батбаатар", "Эрдэнэ", "Нямжав", "Отгон", "Сайнбаяр", "Лхагвасүрэн", "Цэцгээ", "Очирбат", "Нандин", "Цогбадрах"
-    };
-    
+     */ 
     public static void main(String[] args) {
-        
-        
-        List<String> names = FileHandler.readNamesFromFile("src/CA_2/Applicants_Form.txt");
-        List<String> sortedNames = sorter.mergeSort(names);
-        List<Employee> employees = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
-        
-        while(true){
-            System.out.println("\n📋 Меню сонгоно уу:");
+        List<Employee> employees = readEmployeesFromCSV("src/CA_2/Applicants_Form.txt");
+
+        while (true) {
+            System.out.println("\n Please choose an Menu:");
             for (int i = 0; i < MenuOption.values().length; i++) {
                 System.out.println((i + 1) + ". " + MenuOption.values()[i]);
-            } 
-            
+            }
+
             int choice = getValidChoice(scanner, MenuOption.values().length);
             MenuOption selected = MenuOption.values()[choice - 1];
-            
+
             switch (selected) {
                 case SORT:
-                    //List<String> names = employees.stream().map(Employee::getName).toList();
-                    //List<String> sorted = sorter.mergeSort(names);
-                    System.out.println("sorted нэрс:");
-                    for(int i = 0; i < Math.min(20,sortedNames.size());i++){
-                    System.out.println(sortedNames.get(i));
-                     }
-                    
+                    List<String> allNames = new ArrayList<>();
+                    for (Employee emp : employees) {
+                        allNames.add(emp.getFullName());
+                    }
+                    List<String> sortedAll = sorter.mergeSort(allNames);
+                    System.out.println("\n First 20 sorted names:");
+                    for (int i = 0; i < Math.min(20, sortedAll.size()); i++) {
+                        System.out.println(sortedAll.get(i));
+                    }
                     break;
 
                 case SEARCH:
-                    System.out.print("Хайх нэр: ");
+                    List<String> searchable = new ArrayList<>();
+                    for (Employee emp : employees) {
+                        searchable.add(emp.getFullName());
+                    }
+                    List<String> sortedSearch = sorter.mergeSort(searchable);
+                    System.out.print("Enter name to search: ");
                     String target = scanner.nextLine();
-//                    List<String> nameList = employees.stream().map(Employee::getName).toList();
-//                    List<String> sortedList = sorter.mergeSort(nameList);
-                    int index = Searcher.binarySearch(sortedNames, target);
+                    int index = Searcher.binarySearch(sortedSearch, target);
                     if (index >= 0) {
-                        System.out.println("Нэр олдлоо: " + sortedNames.get(index));
+                        System.out.println("Name found: " + sortedSearch.get(index));
+                        for (Employee emp : employees) {
+                            if (emp.getFullName().equalsIgnoreCase(sortedSearch.get(index))) {
+                                System.out.println(emp);
+                                break;
+                            }
+                        }
                     } else {
-                        System.out.println("Хайсан нэр олдсонгүй.");
+                        System.out.println("Name not found.");
                     }
                     break;
 
                 case ADD_EMPLOYEE:
-                    //1. Нэр авах
-                    System.out.println("Ажилтны нэр: ");
-                    String name = scanner.nextLine();
+                    // 1. Нэр авах
+                    System.out.println("Enter full name: ");
+                    String fullName = scanner.nextLine();
 
-                    //2.Менежер төрөл сонгох
-                    System.out.println("Менежерийн төрлийг сонгоно уу:");
+                    // 2. Менежер төрөл сонгох
+                    System.out.println("Select Manager Type:");
                     ManagerType[] managerTypes = ManagerType.values();
-                    for(int i=0 ; i< managerTypes.length;i++){
-                        System.out.println((i+1) + ". " + managerTypes[i]);   
+                    for (int i = 0; i < managerTypes.length; i++) {
+                        System.out.println((i + 1) + ". " + managerTypes[i]);
                     }
-
                     int managerChoice = getValidChoice(scanner, managerTypes.length);
                     ManagerType managerType = managerTypes[managerChoice - 1];
 
-                    //3. Хэлтэс сонгох
-                    System.out.println("Хэлтсийг сонгоно уу:");
-                    DepartmentName[] departments= DepartmentName.values();
-                    for(int i=0; i < departments.length;i++){
+                    // 3. Хэлтэс сонгох
+                    System.out.println("Select Department:");
+                    DepartmentName[] departments = DepartmentName.values();
+                    for (int i = 0; i < departments.length; i++) {
                         System.out.println((i + 1) + ". " + departments[i]);
                     }
-
                     int deptChoice = getValidChoice(scanner, departments.length);
                     DepartmentName department = departments[deptChoice - 1];
 
-                    //4. employee үүсгээд жагсаалт руу нэмэх
-                    Employee newEmployee = new Employee(name, managerType, department);
+                    // 4. Position сонгох
+                    System.out.println("Select Position Level:");
+                    PositionLevel[] positions = PositionLevel.values();
+                    for (int i = 0; i < positions.length; i++) {
+                        System.out.println((i + 1) + ". " + positions[i]);
+                    }
+                    int posChoice = getValidChoice(scanner, positions.length);
+                    String position = positions[posChoice - 1].toString();
+
+                    // 5. Job Title сонгох
+                    System.out.println("Select Job Title:");
+                    JobTitle[] jobTitles = JobTitle.values();
+                    for (int i = 0; i < jobTitles.length; i++) {
+                        System.out.println((i + 1) + ". " + jobTitles[i]);
+                    }
+                    int titleChoice = getValidChoice(scanner, jobTitles.length);
+                    String jobTitle = jobTitles[titleChoice - 1].toString();
+
+                    // 6. employee үүсгээд жагсаалт руу нэмэх
+                    Employee newEmployee = new Employee(fullName, managerType, department, position, jobTitle);
                     employees.add(newEmployee);
 
-
-                    System.out.println("Амжилттай нэмэгдлээ: " + newEmployee);
+                    System.out.println("Successfully added: " + newEmployee);
                     break;
 
                 case GENERATE_RANDOM:
-                    System.out.print("Хэдэн ажилтан үүсгэх вэ? ");
+                    System.out.print("How many employees to generate? ");
                     int count = scanner.nextInt();
                     scanner.nextLine();
                     for (int i = 0; i < count; i++) {
-                        Employee e = generateRandomEmployee();
+                        String fName = "Emp" + (employees.size() + 1);
+                        ManagerType manager = ManagerType.values()[new Random().nextInt(ManagerType.values().length)];
+                        DepartmentName dept = DepartmentName.values()[new Random().nextInt(DepartmentName.values().length)];
+                        String pos = "senior";
+                        String title = "Surgeon";
+                        Employee e = new Employee(fName, manager, dept, pos, title);
                         employees.add(e);
-                        System.out.println("➕ " + e);
+                        System.out.println("+ " + e);
                     }
                     break;
-                
+
                 case SHOW_EMPLOYEES:
-                    System.out.println("📋 Ажилтны нийт жагсаалт:");
-                    for (Employee e : employees) {
-                        System.out.println(e);
+                    System.out.println("All registered employees:");
+                    for (Employee emp : employees) {
+                        System.out.println(emp);
                     }
                     break;
 
                 case EXIT:
-                    System.out.println("Программыг дуусгалаа.");
+                    System.out.println("Exiting program.");
                     return;
-            
+            }
         }
-        
-        
-        
-        
-        }
-        
-        
     }
-    
-    public static int getValidChoice(Scanner scanner, int maxOption){
+
+    public static List<Employee> readEmployeesFromCSV(String filename) {
+        List<Employee> employees = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line;
+            reader.readLine(); // Skip header
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length >= 5) {
+                    String fullName = parts[0].trim();
+                    ManagerType managerType = ManagerType.valueOf(parts[1].trim().toUpperCase());
+                    DepartmentName department = DepartmentName.valueOf(parts[2].trim().toUpperCase());
+                    String position = parts[3].trim();
+                    String jobTitle = parts[4].trim();
+
+                    employees.add(new Employee(fullName, managerType, department, position, jobTitle));
+                }
+            }
+        } catch (IOException | IllegalArgumentException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+        return employees;
+    }
+
+    public static int getValidChoice(Scanner scanner, int maxOption) {
         int choice = -1;
-        while (choice<1 || choice > maxOption){
-            System.out.println("Сонголтоо оруулна уу (1-" + maxOption + "): ");
-            if(scanner.hasNextInt()){
+        while (choice < 1 || choice > maxOption) {
+            System.out.print("Enter choice (1-" + maxOption + "): ");
+            if (scanner.hasNextInt()) {
                 choice = scanner.nextInt();
-                
-                scanner.nextLine();// newline залгих
+                scanner.nextLine();
             } else {
-                System.out.println("Буруу утга. Дахин оролдоно уу.");
+                System.out.println("Invalid input. Please try again.");
                 scanner.nextLine();
             }
         }
         return choice;
-    }
-    public static Employee generateRandomEmployee(){
-        Random rand = new Random();
-        
-        String first = FIRST_NAMES[rand.nextInt(FIRST_NAMES.length)];
-        String last = LAST_NAMES[rand.nextInt(LAST_NAMES.length)];
-        String fullName = first + " " + last;
-        
-        ManagerType manager = ManagerType.values()[rand.nextInt(ManagerType.values().length)];
-        DepartmentName department = DepartmentName.values()[rand.nextInt(DepartmentName.values().length)];
-        
-        return new Employee(fullName, manager, department);
     }
 } 
     

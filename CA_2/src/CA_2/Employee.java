@@ -9,31 +9,42 @@ package CA_2;
  * @author sorgi
  */
 public class Employee {
-    private String name;
+    private String fullName;
     private ManagerType managerType;
     private DepartmentName department;
-    
-    public Employee(String name, ManagerType managerType, DepartmentName department) {
-        this.name = name;
+    private String position;
+    private String jobTitle;
+
+    public Employee(String fullName, ManagerType managerType, DepartmentName department, String position, String jobTitle) {
+        this.fullName = fullName;
         this.managerType = managerType;
         this.department = department;
+        this.position = position;
+        this.jobTitle = jobTitle;
     }
-    
-    public String getName(){
-        return name;
+
+    public String getFullName() {
+        return fullName;
     }
-    
-    public ManagerType getManagerType(){
+
+    public ManagerType getManagerType() {
         return managerType;
     }
-    
-    public DepartmentName getDepartment(){
+
+    public DepartmentName getDepartment() {
         return department;
     }
-    
-    @Override
-    public String toString(){
-        return name + "(" + managerType + ", " + department + ")";
+
+    public String getPosition() {
+        return position;
     }
-    
-}
+
+    public String getJobTitle() {
+        return jobTitle;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s | %s | %s | %s | %s", fullName, managerType, department, position, jobTitle);
+    }
+} 

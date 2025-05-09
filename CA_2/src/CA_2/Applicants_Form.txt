@@ -1,40 +1,21 @@
-Батбаяр Бат
-Сэргэлэн Энхжин
-Ганзориг Мөнх
-Тэмүүлэн Энхтүвшин
-Эрдэнэтуяа Алтанцэцэг
-Номин-Эрдэнэ
-Отгонбаяр Төгөлдөр
-Дэлгэрмаа Сувд
-Бат-Эрдэнэ Энхболд
-Цэцэгмаа Солонго
-Мөнх-Эрдэнэ
-Болормаа Сарангэрэл
-Төрболд Хангал
-Одончимэг Ариунаа
-Нямжав Алтангэрэл
-Сувдаа Энхтуяа
-Цогбаяр Ганбат
-Төгсжаргал Ариунболд
-Мөнхцэцэг Жавзмаа
-Хишигжаргал Эрдэнэ
-Ганбаатар Батболд
-Дулмаа Хандмаа
-Энхбаяр Ууганбаяр
-Нандинцэцэг Сайханбилэг
-Сараа Оюунцэцэг
-Баярмагнай Ганзориг
-Алтантөгс Эрдэнэбат
-Цэнгэлмаа Энхжаргал
-Хандсүрэн Отгонтуяа
-Болдбаатар Энхболор
-Гэрэлтуяа Ганболд
-Мөнхбат Сэргэлэн
-Энхтуяа Түвшинбаяр
-Бадамжав Одбаяр
-Сарангэрэл Наранцэцэг
-Цолмон Тэмүүлэн
-Содгэрэл Цэцгээ
-Лхагвасүрэн Батцэцэг
-Баянмөнх Гантуяа
-Одонтуяа Энхзаяа
+Full Name,Manager Type,Department,Position,Job Title
+John Smith,CHIEF_SURGEON,Surgery,senior,Surgeon
+Emily Brown,NURSE_SUPERVISOR,Pediatrics,junior,Nurse
+Michael Williams,DEPARTMENT_HEAD,Radiology,consultant,Radiologist
+Sarah Johnson,NURSE_SUPERVISOR,Emergency,senior,Head Nurse
+David Wilson,CHIEF_SURGEON,Oncology,head,Oncologist
+Sophia Taylor,DEPARTMENT_HEAD,ICU,resident,ICU Nurse
+Daniel Walker,NURSE_SUPERVISOR,Outpatient,intern,Medical Assistant
+Jessica Lee,DEPARTMENT_HEAD,Cardiology,senior,Cardiologist
+Ethan Anderson,CHIEF_SURGEON,Neurology,consultant,Neurosurgeon
+Mia Clark,NURSE_SUPERVISOR,Maternity,junior,Nurse
+James Anderson,DEPARTMENT_HEAD,Finance,consultant,Medical Biller
+Emma Brown,NURSE_SUPERVISOR,HR,junior,HR Assistant
+Benjamin Hill,CHIEF_SURGEON,Surgery,senior,Surgeon
+Lana Parker,NURSE_SUPERVISOR,Radiology,resident,Technician
+Leo Wright,DEPARTMENT_HEAD,Outpatient,middle,Physician
+Olivia Martinez,DEPARTMENT_HEAD,Emergency,senior,ER Doctor
+Isla Fisher,CHIEF_SURGEON,ICU,consultant,Intensivist
+Victor Stewart,NURSE_SUPERVISOR,Oncology,junior,Nurse
+Amelia King,DEPARTMENT_HEAD,Cardiology,head,Head Cardiologist
+Oscar Reed,CHIEF_SURGEON,Surgery,resident,Resident Surgeon

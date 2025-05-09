@@ -8,17 +8,11 @@ package CA_2;
  *
  * @author sorgi
  */
-public enum DepartmentName {
-    SURGERY,
-    PEDIATRICS,
-    RADIOLOGY,
-    EMERGENCY,
-    ONCOLOGY,
-    CARDIOLOGY,
-    ICU,
-    MATERNITY,
-    OUTPATIENT,
-    NEUROLOGY,
-    FINANCE,
-    HR
+public enum PositionLevel {
+    INTERN,
+    RESIDENT,
+    JUNIOR,
+    SENIOR,
+    CONSULTANT,
+    HEAD
 }
