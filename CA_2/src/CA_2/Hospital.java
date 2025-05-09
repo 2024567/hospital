@@ -15,9 +15,14 @@ public class Hospital {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        
         List<String> names = FileHandler.readNamesFromFile("src/CA_2/Applicants_Form.txt");
         List<String> sortedNames = sorter.mergeSort(names);
+        List<Employee> employees = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
+        
+        
         System.out.println("Нийт нэрсийн тоо:" + names.size());
         for (String name : names){
             System.out.println(name);
@@ -44,6 +49,56 @@ public class Hospital {
             System.out.println("Хайсан нэр олдсонгүй.");
         }
         
+        //1. Нэр авах
+        System.out.println("Ажилтны нэр: ");
+        String name = scanner.nextLine();
+        
+        //2.Менежер төрөл сонгох
+        System.out.println("Менежерийн төрлийг сонгоно уу:");
+        ManagerType[] managerTypes = ManagerType.values();
+        for(int i=0 ; i< managerTypes.length;i++){
+            System.out.println((i+1) + ". " + managerTypes[i]);   
+        }
+        
+        int managerChoice = getValidChoice(scanner, managerTypes.length);
+        ManagerType managerType = managerTypes[managerChoice - 1];
+        
+        //3. Хэлтэс сонгох
+        System.out.println("Хэлтсийг сонгоно уу:");
+        DepartmentName[] departments= DepartmentName.values();
+        for(int i=0; i < departments.length;i++){
+            System.out.println((i + 1) + ". " + departments[i]);
+        }
+        
+        int deptChoice = getValidChoice(scanner, departments.length);
+        DepartmentName department = departments[deptChoice - 1];
+        
+        //4. employee үүсгээд жагсаалт руу нэмэх
+        Employee newEmployee = new Employee(name, managerType, department);
+        employees.add(newEmployee);
+        
+        
+        System.out.println("Амжилттай нэмэгдлээ: " + newEmployee);
+        
+        
     }
     
-}
+    public static int getValidChoice(Scanner scanner, int maxOption){
+        int choice = -1;
+        while (choice<1 || choice > maxOption){
+            System.out.println("Сонголтоо оруулна уу (1-" + maxOption + "): ");
+            if(scanner.hasNextInt()){
+                choice = scanner.nextInt();
+                
+                scanner.nextLine();// newline залгих
+            } else {
+                System.out.println("Буруу утга. Дахин оролдоно уу.");
+                scanner.nextLine();
+            }
+        }
+        return choice;
+    }
+} 
+    
+    
+
