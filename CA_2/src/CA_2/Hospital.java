@@ -14,6 +14,14 @@ public class Hospital {
     /**
      * @param args the command line arguments
      */
+    
+    public static final String[] FIRST_NAMES = {
+        "Бат", "Сараа", "Оюунаа", "Тэмүүлэн", "Мөнх", "Энхжин", "Жавхлан", "Төгөлдөр", "Сувд", "Ганболд"
+    };
+    public static final String[] LAST_NAMES = {
+        "Батбаатар", "Эрдэнэ", "Нямжав", "Отгон", "Сайнбаяр", "Лхагвасүрэн", "Цэцгээ", "Очирбат", "Нандин", "Цогбадрах"
+    };
+    
     public static void main(String[] args) {
         
         
@@ -28,11 +36,13 @@ public class Hospital {
             System.out.println(name);
         }
         System.out.println("*******************************************************");
+        
         System.out.println("sorted нэрс:");
         for(int i = 0; i < sortedNames.size();i++){
             System.out.println(sortedNames.get(i));
         }
         System.out.println("*******************************************************");
+        
         System.out.println("Хайх нэрийг оруулна уу: ");
         String targetName = scanner.nextLine();
         
@@ -80,6 +90,22 @@ public class Hospital {
         
         System.out.println("Амжилттай нэмэгдлээ: " + newEmployee);
         
+        System.out.println("*******************************************************");
+        
+        System.out.print("Хэдэн санамсаргүй ажилтан үүсгэх вэ? ");
+        int count = scanner.nextInt();
+        scanner.nextLine();
+        
+        for(int i = 0 ; i < count ; i++){
+            Employee randomEmp = generateRandomEmployee();
+            employees.add(randomEmp);
+            System.out.println("+ " + randomEmp);
+        }
+        
+        for(Employee e: employees){
+            System.out.println(e);
+        }
+        
         
     }
     
@@ -97,6 +123,18 @@ public class Hospital {
             }
         }
         return choice;
+    }
+    public static Employee generateRandomEmployee(){
+        Random rand = new Random();
+        
+        String first = FIRST_NAMES[rand.nextInt(FIRST_NAMES.length)];
+        String last = LAST_NAMES[rand.nextInt(LAST_NAMES.length)];
+        String fullName = first + " " + last;
+        
+        ManagerType manager = ManagerType.values()[rand.nextInt(ManagerType.values().length)];
+        DepartmentName department = DepartmentName.values()[rand.nextInt(DepartmentName.values().length)];
+        
+        return new Employee(fullName, manager, department);
     }
 } 
     
