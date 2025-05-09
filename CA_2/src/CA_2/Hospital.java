@@ -13,12 +13,14 @@ import java.io.*;
 public class Hospital {
 
     /**
-     * @param args the command line arguments
+     * This is where the program starts. It loads employee data and shows the menu.
      */ 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);   
+        // Read employee data from a file
         List<Employee> employees = readEmployeesFromCSV("src/CA_2/Applicants_Form.txt");
 
+        // Keep showing the menu until the user exits
         while (true) {
             System.out.println("\n Please choose an Menu:");
             for (int i = 0; i < MenuOption.values().length; i++) {
@@ -29,12 +31,15 @@ public class Hospital {
             MenuOption selected = MenuOption.values()[choice - 1];
 
             switch (selected) {
+                 // Get all employee names and sort them alphabetically
                 case SORT:
                     List<String> allNames = new ArrayList<>();
                     for (Employee emp : employees) {
                         allNames.add(emp.getFullName());
                     }
                     List<String> sortedAll = sorter.mergeSort(allNames);
+                    
+                    // Show the first 20 sorted names
                     System.out.println("\n First 20 sorted names:");
                     for (int i = 0; i < Math.min(20, sortedAll.size()); i++) {
                         System.out.println(sortedAll.get(i));
@@ -42,6 +47,7 @@ public class Hospital {
                     break;
 
                 case SEARCH:
+                    // Search for a name using binary search and show details if found
                     List<String> searchable = new ArrayList<>();
                     for (Employee emp : employees) {
                         searchable.add(emp.getFullName());
@@ -50,8 +56,10 @@ public class Hospital {
                     System.out.print("Enter name to search: ");
                     String target = scanner.nextLine();
                     int index = Searcher.binarySearch(sortedSearch, target);
+                    
                     if (index >= 0) {
                         System.out.println("Name found: " + sortedSearch.get(index));
+                        // Show the full info of the matched employee
                         for (Employee emp : employees) {
                             if (emp.getFullName().equalsIgnoreCase(sortedSearch.get(index))) {
                                 System.out.println(emp);
@@ -64,11 +72,11 @@ public class Hospital {
                     break;
 
                 case ADD_EMPLOYEE:
-                    // 1. Нэр авах
+                    // Enter new employee details manually
                     System.out.println("Enter full name: ");
                     String fullName = scanner.nextLine();
 
-                    // 2. Менежер төрөл сонгох
+                    // Choose manager type
                     System.out.println("Select Manager Type:");
                     ManagerType[] managerTypes = ManagerType.values();
                     for (int i = 0; i < managerTypes.length; i++) {
@@ -77,7 +85,7 @@ public class Hospital {
                     int managerChoice = getValidChoice(scanner, managerTypes.length);
                     ManagerType managerType = managerTypes[managerChoice - 1];
 
-                    // 3. Хэлтэс сонгох
+                    // Choose department
                     System.out.println("Select Department:");
                     DepartmentName[] departments = DepartmentName.values();
                     for (int i = 0; i < departments.length; i++) {
@@ -86,7 +94,7 @@ public class Hospital {
                     int deptChoice = getValidChoice(scanner, departments.length);
                     DepartmentName department = departments[deptChoice - 1];
 
-                    // 4. Position сонгох
+                    // Choose position level
                     System.out.println("Select Position Level:");
                     PositionLevel[] positions = PositionLevel.values();
                     for (int i = 0; i < positions.length; i++) {
@@ -95,7 +103,7 @@ public class Hospital {
                     int posChoice = getValidChoice(scanner, positions.length);
                     String position = positions[posChoice - 1].toString();
 
-                    // 5. Job Title сонгох
+                    // Choose job title
                     System.out.println("Select Job Title:");
                     JobTitle[] jobTitles = JobTitle.values();
                     for (int i = 0; i < jobTitles.length; i++) {
@@ -104,7 +112,7 @@ public class Hospital {
                     int titleChoice = getValidChoice(scanner, jobTitles.length);
                     String jobTitle = jobTitles[titleChoice - 1].toString();
 
-                    // 6. employee үүсгээд жагсаалт руу нэмэх
+                    // Make the new employee and add to the list
                     Employee newEmployee = new Employee(fullName, managerType, department, position, jobTitle);
                     employees.add(newEmployee);
 
@@ -112,6 +120,7 @@ public class Hospital {
                     break;
 
                 case GENERATE_RANDOM:
+                    // Create random employees
                     System.out.print("How many employees to generate? ");
                     int count = scanner.nextInt();
                     scanner.nextLine();
@@ -128,6 +137,7 @@ public class Hospital {
                     break;
 
                 case SHOW_EMPLOYEES:
+                    // Show all employees
                     System.out.println("All registered employees:");
                     for (Employee emp : employees) {
                         System.out.println(emp);
@@ -135,17 +145,22 @@ public class Hospital {
                     break;
 
                 case EXIT:
+                    // End the program
                     System.out.println("Exiting program.");
                     return;
             }
         }
     }
-
+    
+    /**
+     * This reads employee data from a text file.
+     * Each line has: name, manager type, department, position, job title
+     */
     public static List<Employee> readEmployeesFromCSV(String filename) {
         List<Employee> employees = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
             String line;
-            reader.readLine(); // Skip header
+            reader.readLine(); // Skip the first line (headers)
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
                 if (parts.length >= 5) {
@@ -163,14 +178,16 @@ public class Hospital {
         }
         return employees;
     }
-
+     /**
+     * Ask the user until they give a valid number.
+     */
     public static int getValidChoice(Scanner scanner, int maxOption) {
         int choice = -1;
         while (choice < 1 || choice > maxOption) {
             System.out.print("Enter choice (1-" + maxOption + "): ");
             if (scanner.hasNextInt()) {
                 choice = scanner.nextInt();
-                scanner.nextLine();
+                scanner.nextLine();// Clear the input line
             } else {
                 System.out.println("Invalid input. Please try again.");
                 scanner.nextLine();
